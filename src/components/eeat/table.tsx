@@ -111,33 +111,149 @@ const timerData: Timer[] = [
   { keyword: '8 hour timer', durationMinutes: 480, durationSeconds: 28800, durationHours: 480 / 60 },
 ];
 
-// Functional component to render the timer table
 const TimerTable: React.FC = () => {
   return (
-    <div className="bg-black text-white p-5 font-sans">
-      <h2 className="text-4xl my-5 flex justify-center items-center font-bold text-gray-200">Timer Durations Table</h2>
-      <table className="bg-gray-800 w-full max-w-3xl mx-auto border-collapse">
-        <thead>
-          <tr className="bg-gray-700">
-            <th className="border border-gray-600 p-2 text-left text-white">Keyword</th>
-            <th className="border border-gray-600 p-2 text-right text-white">Duration (Minutes)</th>
-            <th className="border border-gray-600 p-2 text-right text-white">Duration (Seconds)</th>
-            <th className="border border-gray-600 p-2 text-right text-white">Duration (Hours)</th>
-          </tr>
-        </thead>
-        <tbody>
-          {timerData.map((timer) => (
-            <tr key={timer.keyword} className="bg-gray-800">
-              <td className="border border-gray-600 p-2 text-left text-white">{timer.keyword}</td>
-              <td className="border border-gray-600 p-2 text-right text-white">{timer.durationMinutes.toFixed(3)}</td>
-              <td className="border border-gray-600 p-2 text-right text-white">{timer.durationSeconds}</td>
-              <td className="border border-gray-600 p-2 text-right text-white">{timer.durationHours.toFixed(5)}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="bg-black text-white p-3 md:p-5 font-sans">
+      <h2 className="text-2xl sm:text-3xl md:text-4xl my-3 md:my-5 text-center font-bold text-gray-200">
+        Timer Durations Table
+      </h2>
+      
+      {/* Desktop/Large Tablet View */}
+      <div className="hidden lg:block overflow-x-auto">
+        <div className="min-w-full max-w-6xl mx-auto">
+          <table className="bg-gray-800 w-full border-collapse">
+            <thead>
+              <tr className="bg-gray-700">
+                <th className="border border-gray-600 p-2 text-left text-white sticky top-0 z-10">Keyword</th>
+                <th className="border border-gray-600 p-2 text-right text-white sticky top-0 z-10">Minutes</th>
+                <th className="border border-gray-600 p-2 text-right text-white sticky top-0 z-10">Seconds</th>
+                <th className="border border-gray-600 p-2 text-right text-white sticky top-0 z-10">Hours</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-700">
+              {timerData.map((timer, index) => (
+                <tr 
+                  key={`${timer.keyword}-${index}`} 
+                  className="bg-gray-800 hover:bg-gray-750 transition-colors"
+                >
+                  <td className="border border-gray-600 p-2 text-left text-white max-w-xs truncate">
+                    {timer.keyword}
+                  </td>
+                  <td className="border border-gray-600 p-2 text-right text-white">
+                    {timer.durationMinutes.toFixed(3)}
+                  </td>
+                  <td className="border border-gray-600 p-2 text-right text-white">
+                    {timer.durationSeconds}
+                  </td>
+                  <td className="border border-gray-600 p-2 text-right text-white">
+                    {timer.durationHours.toFixed(5)}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Tablet View (simplified table) */}
+      <div className="hidden md:block lg:hidden overflow-x-auto">
+        <div className="min-w-full max-w-4xl mx-auto">
+          <table className="bg-gray-800 w-full border-collapse">
+            <thead>
+              <tr className="bg-gray-700">
+                <th className="border border-gray-600 p-2 text-left text-white sticky top-0 z-10">Keyword</th>
+                <th className="border border-gray-600 p-2 text-right text-white sticky top-0 z-10">Minutes</th>
+                <th className="border border-gray-600 p-2 text-right text-white sticky top-0 z-10">Seconds</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-700">
+              {timerData.map((timer, index) => (
+                <tr 
+                  key={`${timer.keyword}-${index}-md`} 
+                  className="bg-gray-800 hover:bg-gray-750 transition-colors"
+                >
+                  <td className="border border-gray-600 p-2 text-left text-white max-w-xs truncate">
+                    {timer.keyword}
+                  </td>
+                  <td className="border border-gray-600 p-2 text-right text-white">
+                    {timer.durationMinutes.toFixed(2)}
+                  </td>
+                  <td className="border border-gray-600 p-2 text-right text-white">
+                    {timer.durationSeconds}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Mobile View (card-based) */}
+      <div className="md:hidden">
+        <div className="max-w-md mx-auto">
+          <div className="bg-gray-800 rounded-lg overflow-hidden shadow-lg">
+            <div className="p-3 bg-gray-700 border-b border-gray-600 sticky top-0 z-10">
+              <div className="grid grid-cols-3 gap-2 font-bold text-white">
+                <div>Keyword</div>
+                <div className="text-right">Mins</div>
+                <div className="text-right">Secs</div>
+              </div>
+            </div>
+            <div className="overflow-y-auto max-h-[70vh]">
+              {timerData.map((timer, index) => (
+                <div 
+                  key={`${timer.keyword}-${index}-sm`} 
+                  className="p-3 border-b border-gray-700 hover:bg-gray-750 transition-colors"
+                >
+                  <div className="grid grid-cols-3 gap-2 items-center">
+                    <div className="text-white truncate">{timer.keyword}</div>
+                    <div className="text-right text-white">{timer.durationMinutes.toFixed(1)}</div>
+                    <div className="text-right text-white">{timer.durationSeconds}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
 
 export default TimerTable;
+
+
+
+
+
+
+// // Functional component to render the timer table
+// const TimerTable: React.FC = () => {
+//   return (
+//     <div className="bg-black text-white p-5 font-sans">
+//       <h2 className="text-4xl my-5 flex justify-center items-center font-bold text-gray-200">Timer Durations Table</h2>
+//       <table className="bg-gray-800 w-full max-w-3xl mx-auto border-collapse">
+//         <thead>
+//           <tr className="bg-gray-700">
+//             <th className="border border-gray-600 p-2 text-left text-white">Keyword</th>
+//             <th className="border border-gray-600 p-2 text-right text-white">Duration (Minutes)</th>
+//             <th className="border border-gray-600 p-2 text-right text-white">Duration (Seconds)</th>
+//             <th className="border border-gray-600 p-2 text-right text-white">Duration (Hours)</th>
+//           </tr>
+//         </thead>
+//         <tbody>
+//           {timerData.map((timer) => (
+//             <tr key={timer.keyword} className="bg-gray-800">
+//               <td className="border border-gray-600 p-2 text-left text-white">{timer.keyword}</td>
+//               <td className="border border-gray-600 p-2 text-right text-white">{timer.durationMinutes.toFixed(3)}</td>
+//               <td className="border border-gray-600 p-2 text-right text-white">{timer.durationSeconds}</td>
+//               <td className="border border-gray-600 p-2 text-right text-white">{timer.durationHours.toFixed(5)}</td>
+//             </tr>
+//           ))}
+//         </tbody>
+//       </table>
+//     </div>
+//   );
+// };
+
+// export default TimerTable;
